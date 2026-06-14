@@ -1,0 +1,211 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700;800&family=Lora:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================
+   ROOT + BODY
+========================= */
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  width: 100%;
+  background: #050403;
+  color: #f5ede2;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at top,
+      rgba(198,166,122,0.06),
+      transparent 35%),
+    #050403;
+}
+
+/* =========================
+   TYPOGRAPHY
+========================= */
+
+h1,
+h2,
+h3,
+h4,
+.font-serif,
+.font-serif-luxury {
+  font-family: 'Playfair Display', serif;
+}
+
+/* =========================
+   UNIVERSAL
+========================= */
+
+* {
+  box-sizing: border-box;
+}
+
+input,
+button,
+textarea {
+  outline: none;
+}
+
+/* =========================
+   CUSTOM SCROLLBAR
+========================= */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0d0b09;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2b2118;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #c6a67a;
+}
+
+/* =========================
+   SHIMMER EFFECT
+========================= */
+
+.shimmer {
+  background:
+    linear-gradient(
+      90deg,
+      #181411 25%,
+      #2e2621 50%,
+      #181411 75%
+    );
+
+  background-size: 200% 100%;
+
+  animation: loading-shimmer 1.5s infinite;
+}
+
+@keyframes loading-shimmer {
+
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* =========================
+   FADE ANIMATION
+========================= */
+
+@keyframes fadeIn {
+
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation:
+    fadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1)
+    forwards;
+}
+
+/* =========================
+   GLASS PANELS
+========================= */
+
+.glass-panel {
+  background:
+    rgba(24, 20, 17, 0.88);
+
+  backdrop-filter: blur(14px);
+
+  -webkit-backdrop-filter: blur(14px);
+
+  border:
+    1px solid rgba(198,166,122,0.08);
+}
+
+/* =========================
+   PREMIUM SHADOWS
+========================= */
+
+.shadow-premium {
+
+  box-shadow:
+    0 0 30px rgba(0,0,0,0.35),
+    0 0 80px rgba(198,166,122,0.05);
+}
+
+.shadow-premium-hover {
+
+  box-shadow:
+    0 0 40px rgba(0,0,0,0.45),
+    0 0 100px rgba(198,166,122,0.08);
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+input {
+
+  transition:
+    all 0.25s ease;
+}
+
+input:focus {
+
+  border-color: #c6a67a !important;
+
+  box-shadow:
+    0 0 0 3px rgba(198,166,122,0.12);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+button {
+  transition:
+    all 0.25s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+/* =========================
+   CENTER HELPERS
+========================= */
+
+.center-screen {
+
+  min-height: 100vh;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+}
