@@ -13,6 +13,7 @@ import com.library.digital.repositories.mongo.ReadingLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class BorrowService {
+
     @Autowired
     private BorrowRecordRepository borrowRecordRepository;
 
@@ -35,94 +37,170 @@ public class BorrowService {
 
     @Transactional
     public BorrowRecord borrowBook(Long bookId, Long userId) {
+
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "User not found with id: " + userId));
+
         Book book = bookRepository.findById(bookId)
-                .orElseThrow(() -> new ResourceNotFoundException("Book not found with id: " + bookId));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Book not found with id: " + bookId));
 
         if (book.getAvailabilityCount() <= 0) {
-            throw new RuntimeException("Book is currently unavailable for borrowing!");
+            throw new RuntimeException(
+                    "Book is currently unavailable for borrowing!");
         }
 
-        Optional<BorrowRecord> activeRecord = borrowRecordRepository.findByUserAndBookAndStatus(user, book, "BORROWED");
+        Optional<BorrowRecord> activeRecord =
+                borrowRecordRepository.findByUserAndBookAndStatus(
+                        user,
+                        book,
+                        "BORROWED");
+
         if (activeRecord.isPresent()) {
-            throw new RuntimeException("You have already checked out this book!");
+            throw new RuntimeException(
+                    "You have already checked out this book!");
         }
 
-        book.setAvailabilityCount(book.getAvailabilityCount() - 1);
+        book.setAvailabilityCount(
+                book.getAvailabilityCount() - 1);
+
         bookRepository.save(book);
 
         BorrowRecord record = new BorrowRecord();
+
         record.setUser(user);
         record.setBook(book);
         record.setBorrowDate(LocalDate.now());
         record.setStatus("BORROWED");
-        
-        BorrowRecord savedRecord = borrowRecordRepository.save(record);
 
-        // LOG in MongoDB
-        ReadingLog log = new ReadingLog();
-        log.setUserId(userId);
-        log.setBookId(bookId);
-        log.setPagesRead(0); 
-        log.setTimestamp(LocalDateTime.now());
-        readingLogRepository.save(log);
+        BorrowRecord savedRecord =
+                borrowRecordRepository.save(record);
+
+        try {
+
+            ReadingLog log = new ReadingLog();
+
+            log.setUserId(userId);
+            log.setBookId(bookId);
+            log.setPagesRead(0);
+            log.setTimestamp(LocalDateTime.now());
+
+            readingLogRepository.save(log);
+
+            System.out.println(
+                    "MONGODB LOG SAVED SUCCESSFULLY (BORROW)");
+
+        } catch (Exception e) {
+
+            System.out.println(
+                    "MONGODB ERROR (BORROW): "
+                            + e.getMessage());
+
+            e.printStackTrace();
+        }
 
         return savedRecord;
     }
 
     @Transactional
     public BorrowRecord returnBook(Long bookId, Long userId) {
+
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "User not found with id: " + userId));
+
         Book book = bookRepository.findById(bookId)
-                .orElseThrow(() -> new ResourceNotFoundException("Book not found with id: " + bookId));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Book not found with id: " + bookId));
 
-        BorrowRecord record = borrowRecordRepository.findByUserAndBookAndStatus(user, book, "BORROWED")
-                .orElseThrow(() -> new ResourceNotFoundException("No active borrow record found for this book and user!"));
+        BorrowRecord record =
+                borrowRecordRepository.findByUserAndBookAndStatus(
+                                user,
+                                book,
+                                "BORROWED")
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "No active borrow record found!"));
 
-        book.setAvailabilityCount(book.getAvailabilityCount() + 1);
+        book.setAvailabilityCount(
+                book.getAvailabilityCount() + 1);
+
         bookRepository.save(book);
 
         record.setReturnDate(LocalDate.now());
         record.setStatus("RETURNED");
 
-        BorrowRecord savedRecord = borrowRecordRepository.save(record);
+        BorrowRecord savedRecord =
+                borrowRecordRepository.save(record);
 
-        // LOG completion in MongoDB
-        ReadingLog log = new ReadingLog();
-        log.setUserId(userId);
-        log.setBookId(bookId);
-        log.setPagesRead(120); 
-        log.setTimestamp(LocalDateTime.now());
-        readingLogRepository.save(log);
+        try {
+
+            ReadingLog log = new ReadingLog();
+
+            log.setUserId(userId);
+            log.setBookId(bookId);
+            log.setPagesRead(120);
+            log.setTimestamp(LocalDateTime.now());
+
+            readingLogRepository.save(log);
+
+            System.out.println(
+                    "MONGODB LOG SAVED SUCCESSFULLY (RETURN)");
+
+        } catch (Exception e) {
+
+            System.out.println(
+                    "MONGODB ERROR (RETURN): "
+                            + e.getMessage());
+
+            e.printStackTrace();
+        }
 
         return savedRecord;
     }
 
     public List<BorrowDto> getUserBorrows(Long userId) {
+
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
-        return borrowRecordRepository.findByUser(user).stream()
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "User not found with id: " + userId));
+
+        return borrowRecordRepository.findByUser(user)
+                .stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
     public List<BorrowDto> getUserActiveBorrows(Long userId) {
+
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
-        return borrowRecordRepository.findByUserAndStatus(user, "BORROWED").stream()
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "User not found with id: " + userId));
+
+        return borrowRecordRepository
+                .findByUserAndStatus(user, "BORROWED")
+                .stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
     public List<BorrowDto> getAllBorrows() {
-        return borrowRecordRepository.findAll().stream()
+
+        return borrowRecordRepository.findAll()
+                .stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
     private BorrowDto convertToDto(BorrowRecord record) {
+
         return new BorrowDto(
                 record.getId(),
                 record.getBook().getId(),

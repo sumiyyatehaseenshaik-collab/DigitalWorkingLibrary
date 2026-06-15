@@ -12,6 +12,7 @@ import DashboardPage from './pages/DashboardPage';
 import BooksPage from './pages/BooksPage';
 import BookDetailsPage from './pages/BookDetailsPage';
 import BorrowedBooksPage from './pages/BorrowedBooksPage';
+import SemanticSearchPage from './pages/SemanticSearchPage';
 import ProfilePage from './pages/ProfilePage';
 import AdminPanelPage from './pages/AdminPanelPage';
 
@@ -25,7 +26,7 @@ const AppLayout = ({ children }) => {
     if (pathname.startsWith('/books/')) return 'Volume Specifications';
     if (pathname.startsWith('/books')) return 'Library Archives Catalogue';
     if (pathname.startsWith('/borrowed')) return 'Active Leased Shelf';
-    
+    if (pathname.startsWith('/search')) return 'Semantic Embedding Vector Search';
     if (pathname.startsWith('/profile')) return 'Personal Reading Timeline';
     if (pathname.startsWith('/admin')) return 'Administrative Command Core';
     return 'Digital Library Node';
@@ -110,7 +111,14 @@ const App = () => {
               </ProtectedRoute>
             } 
           />
-          
+          <Route 
+            path="/search" 
+            element={
+              <ProtectedRoute>
+                <SemanticSearchPage />
+              </ProtectedRoute>
+            } 
+          />
           <Route 
             path="/profile" 
             element={

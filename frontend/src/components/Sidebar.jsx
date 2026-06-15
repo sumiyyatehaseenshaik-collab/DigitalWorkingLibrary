@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { api } from '../services/api';
-import { LayoutDashboard, BookOpen, Clock, User, Shield, Gem } from 'lucide-react';
+import { LayoutDashboard, BookOpen, Clock, Sparkles, User, Shield, Gem } from 'lucide-react';
 
 const Sidebar = () => {
   const user = api.getCurrentUser();
@@ -10,6 +10,7 @@ const Sidebar = () => {
     { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { to: '/books', label: 'Browse Library', icon: BookOpen },
     { to: '/borrowed', label: 'Borrowed Books', icon: Clock },
+    { to: '/search', label: 'Semantic Search', icon: Sparkles },
     { to: '/profile', label: 'Personal Shelf', icon: User },
   ];
 
