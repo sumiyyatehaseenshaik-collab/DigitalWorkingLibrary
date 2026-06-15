@@ -56,6 +56,6 @@ public class SemanticSearchService {
             return books;
         }
 
-        return bookRepository.searchBooks(query);
+        return bookRepository.findByTitleContainingIgnoreCase(query);
     }
 }

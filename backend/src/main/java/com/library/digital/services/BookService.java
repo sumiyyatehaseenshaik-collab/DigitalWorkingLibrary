@@ -27,21 +27,19 @@ public class BookService {
     }
 
     public List<Book> searchBooks(String query) {
-        return bookRepository.searchBooks(query);
+        return bookRepository.findByTitleContainingIgnoreCase(query);
     }
 
-    public Book createBook(BookDto bookDto) {
-        Book book = new Book();
+    public Book updateBook(Long id, BookDto bookDto) {
+        Book book = getBookById(id);
+
         book.setTitle(bookDto.getTitle());
         book.setAuthor(bookDto.getAuthor());
         book.setCategory(bookDto.getCategory());
-        book.setSummary(bookDto.getSummary());
-        book.setCoverImage(bookDto.getCoverImage());
-        book.setTotalCount(bookDto.getTotalCount());
-        book.setAvailabilityCount(bookDto.getTotalCount()); // initial availability matches total stock
+        book.setQuantity(bookDto.getTotalCount());
+
         return bookRepository.save(book);
     }
-
     public Book updateBook(Long id, BookDto bookDto) {
         Book book = getBookById(id);
         book.setTitle(bookDto.getTitle());
