@@ -70,6 +70,9 @@ async def semantic_search(
         description="Natural language query for semantic book search"
     )
 ):
+    
+    print("Semantic Search Called")
+    print("Query =", query)
     clean_query = query.strip().lower()
     matched_ids = []
 
@@ -77,6 +80,7 @@ async def semantic_search(
         if clean_query in key or key in clean_query:
             matched_ids = ids
             break
+        print("Matched IDs =", matched_ids)
 
     try:
         async with httpx.AsyncClient() as client:

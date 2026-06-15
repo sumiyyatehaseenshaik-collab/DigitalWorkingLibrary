@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:9696/api";
+const BASE_URL = "http://localhost:8000/api";
 
 const getHeaders = () => {
 
@@ -219,16 +219,27 @@ export const api = {
   // =========================
 
   getBooks: async () => {
-
-    const res = await fetch(
-      `${BASE_URL}/books`,
-      {
-        headers: getHeaders(),
-      }
-    );
-
-    return handleResponse(res);
-  },
+  return [
+    {
+      id: 1,
+      title: "Java Programming",
+      author: "Herbert Schildt",
+      category: "Programming"
+    },
+    {
+      id: 2,
+      title: "Python Basics",
+      author: "Eric Matthes",
+      category: "Programming"
+    },
+    {
+      id: 3,
+      title: "Database Systems",
+      author: "Korth",
+      category: "DBMS"
+    }
+  ];
+},
 
   // FIXED BOOK DETAILS
   getBookById: async (id) => {

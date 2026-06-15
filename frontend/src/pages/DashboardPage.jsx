@@ -52,7 +52,7 @@ const DashboardPage = () => {
             Welcome Back, {user?.username || 'Librarian'}
           </h2>
           <p className="text-xs text-coffee-700 leading-relaxed">
-            Welcome to the Antigravity Digital Library. Browse our high-end, conceptual catalog of design, software engineering, databases, and artificial intelligence textbooks. Enjoy clean vector searches.
+            Welcome to the  Digital Library. Browse our high-end, conceptual catalog of design, software engineering, databases, and artificial intelligence textbooks. Enjoy clean vector searches.
           </p>
         </div>
         <button

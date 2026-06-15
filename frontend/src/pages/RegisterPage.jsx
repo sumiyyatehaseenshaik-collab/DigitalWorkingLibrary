@@ -52,7 +52,7 @@ const RegisterPage = () => {
             <Gem className="h-6 w-6 text-biscuit" />
           </div>
           <h1 className="font-serif text-xl font-bold tracking-widest text-cream uppercase mt-2 leading-none">
-            ANTIGRAVITY
+            Digital Working Library
           </h1>
           <span className="text-[10px] text-[#c6a67a] font-mono tracking-widest uppercase mt-1 leading-none">
             CREATE SYSTEM CREDENTIALS

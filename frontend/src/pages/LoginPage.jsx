@@ -76,7 +76,7 @@ const LoginPage = () => {
           </div>
 
           <h1 className="font-serif text-3xl font-bold tracking-wide text-cream uppercase text-center">
-            ANTIGRAVITY
+            Digital Working Library
           </h1>
 
           <span className="text-[11px] text-[#c6a67a] font-mono tracking-[0.25em] uppercase text-center">

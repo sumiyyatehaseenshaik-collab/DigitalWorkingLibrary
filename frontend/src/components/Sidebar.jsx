@@ -23,7 +23,7 @@ const Sidebar = () => {
         </div>
         <div className="flex flex-col">
           <h1 className="font-serif text-[13px] font-extrabold tracking-widest text-cream uppercase leading-none">
-            ANTIGRAVITY
+            Digital Working Library
           </h1>
           <span className="text-[9px] text-[#c6a67a] font-mono tracking-widest uppercase mt-1">
             DIGITAL LIBRARY
